@@ -1,0 +1,12 @@
+[package]
+name = "kryptografia"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "lib"
+path = "src/lib.rs"
+
+[dependencies]
+nalgebra = "0.32.2"
+

@@ -1,7 +1,7 @@
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, Mul};
 
 pub struct Alphabet {
-    letters: Vec<char>,
+    pub letters: Vec<char>,
 }
 
 impl Default for Alphabet {
@@ -16,6 +16,11 @@ impl Default for Alphabet {
 }
 
 impl Alphabet {
+    pub fn new(input: &str) -> Self {
+        Alphabet {
+            letters: input.chars().collect::<Vec<char>>(),
+        }
+    }
     pub fn char_index(&self, char: char) -> usize {
         self.letters
             .iter()

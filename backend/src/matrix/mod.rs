@@ -1,20 +1,21 @@
 use crate::alphabet::Letter;
 use na::{Matrix2, Vector2};
 
-pub fn encrypt(input: &str, key: Matrix2<usize>) -> String {
+pub fn encrypt<'a>(input: Vec<Letter<'a>>, key: Matrix2<usize>) -> String {
     input
-        .chars()
-        .collect::<Vec<char>>()
         .chunks(2)
-        .map(|pair| (Letter(pair[0]), Letter(pair[1])))
-        .map(|(l1, l2)| (l1.into(), l2.into()))
-        .map(|(n1, n2)| Vector2::new(n1, n2))
-        .map(|v| (key * v).map(|x| x % 26))
-        .flat_map(|v| vec![v.x, v.y])
-        .map(|n| Letter::from(n).0)
-        .collect::<String>()
+        .map(|pair| Vector2::new(pair[0], pair[1]))
+        .map(|v| {
+            vec![
+                key.row(0)[0] * v[0] + key.row(0)[1] * v[1],
+                key.row(1)[0] * v[0] + key.row(1)[1] * v[1],
+            ]
+        })
+        .flatten()
+        .map(|l| l.char)
+        .collect()
 }
 
-pub fn decrypt(input: &str, key: Matrix2<usize>) -> String {
+pub fn decrypt<'a>(input: Vec<Letter<'a>>, key: Matrix2<usize>) -> String {
     encrypt(input, key)
 }
